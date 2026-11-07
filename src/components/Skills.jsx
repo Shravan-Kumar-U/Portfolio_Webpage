@@ -24,20 +24,16 @@ function ParticleSphere() {
 }
 
 export default function Skills() {
+  // Split skills into two rows. No duplication needed here anymore.
   const half = Math.ceil(SKILLS_DATA.length / 2);
   const row1 = SKILLS_DATA.slice(0, half);
   const row2 = SKILLS_DATA.slice(half);
 
-  // FIX: Duplicate only once. This cuts DOM nodes in half, saving mobile memory.
-  const marquee1 = [...row1, ...row1];
-  const marquee2 = [...row2, ...row2];
-
   return (
     <section id="skills" className="py-24 relative overflow-hidden">
       
-      {/* Restored 3D Background */}
+      {/* 3D Background - Optimized for mobile scrolling */}
       <div className="absolute inset-0 z-0 opacity-60 pointer-events-none flex justify-center items-center">
-        {/* FIX: Added dpr limit and removed OrbitControls to stop touch hijacking */}
         <Canvas camera={{ position: [0, 0, 5] }} dpr={[1, 1.5]} gl={{ powerPreference: "high-performance" }}>
           <ambientLight intensity={0.5} />
           <ParticleSphere />
@@ -57,41 +53,69 @@ export default function Skills() {
         
         {/* Row 1 - Left to Right */}
         <div className="w-full overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
-          {/* FIX: Use w-max and 0% to -50% to ensure a perfect, responsive loop */}
           <motion.div 
-            className="flex w-max gap-8 px-4"
+            className="flex w-max"
             animate={{ x: ["0%", "-50%"] }}
             transition={{ repeat: Infinity, ease: "linear", duration: 25 }}
           >
-            {marquee1.map((skill, index) => {
-              const Icon = skill.icon;
-              return (
-                <div key={`row1-${skill.name}-${index}`} className="flex items-center gap-4 glass-card px-8 py-4 w-[250px] group hover:bg-white/10 transition-colors cursor-pointer border-white/10 backdrop-blur-md bg-[#171717]/60">
-                  <Icon size={32} className="text-text-secondary group-hover:text-accent-blue transition-colors" />
-                  <span className="text-lg font-medium text-white whitespace-nowrap">{skill.name}</span>
-                </div>
-              );
-            })}
+            {/* Block 1 */}
+            <div className="flex gap-8 pr-8">
+              {row1.map((skill, index) => {
+                const Icon = skill.icon;
+                return (
+                  <div key={`r1a-${skill.name}-${index}`} className="flex items-center gap-4 glass-card px-8 py-4 w-[250px] group hover:bg-white/10 transition-colors cursor-pointer border-white/10 backdrop-blur-md bg-[#171717]/60">
+                    <Icon size={32} className="text-text-secondary group-hover:text-accent-blue transition-colors" />
+                    <span className="text-lg font-medium text-white whitespace-nowrap">{skill.name}</span>
+                  </div>
+                );
+              })}
+            </div>
+            {/* Block 2 (Exact Duplicate for Seamless Loop) */}
+            <div className="flex gap-8 pr-8">
+              {row1.map((skill, index) => {
+                const Icon = skill.icon;
+                return (
+                  <div key={`r1b-${skill.name}-${index}`} className="flex items-center gap-4 glass-card px-8 py-4 w-[250px] group hover:bg-white/10 transition-colors cursor-pointer border-white/10 backdrop-blur-md bg-[#171717]/60">
+                    <Icon size={32} className="text-text-secondary group-hover:text-accent-blue transition-colors" />
+                    <span className="text-lg font-medium text-white whitespace-nowrap">{skill.name}</span>
+                  </div>
+                );
+              })}
+            </div>
           </motion.div>
         </div>
 
         {/* Row 2 - Right to Left */}
         <div className="w-full overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
-          {/* FIX: Use w-max and -50% to 0% for reverse looping */}
           <motion.div 
-            className="flex w-max gap-8 px-4"
+            className="flex w-max"
             animate={{ x: ["-50%", "0%"] }}
             transition={{ repeat: Infinity, ease: "linear", duration: 25 }}
           >
-            {marquee2.map((skill, index) => {
-              const Icon = skill.icon;
-              return (
-                <div key={`row2-${skill.name}-${index}`} className="flex items-center gap-4 glass-card px-8 py-4 w-[250px] group hover:bg-white/10 transition-colors cursor-pointer border-white/10 backdrop-blur-md bg-[#171717]/60">
-                  <Icon size={32} className="text-text-secondary group-hover:text-accent-violet transition-colors" />
-                  <span className="text-lg font-medium text-white whitespace-nowrap">{skill.name}</span>
-                </div>
-              );
-            })}
+            {/* Block 1 */}
+            <div className="flex gap-8 pr-8">
+              {row2.map((skill, index) => {
+                const Icon = skill.icon;
+                return (
+                  <div key={`r2a-${skill.name}-${index}`} className="flex items-center gap-4 glass-card px-8 py-4 w-[250px] group hover:bg-white/10 transition-colors cursor-pointer border-white/10 backdrop-blur-md bg-[#171717]/60">
+                    <Icon size={32} className="text-text-secondary group-hover:text-accent-violet transition-colors" />
+                    <span className="text-lg font-medium text-white whitespace-nowrap">{skill.name}</span>
+                  </div>
+                );
+              })}
+            </div>
+            {/* Block 2 */}
+            <div className="flex gap-8 pr-8">
+              {row2.map((skill, index) => {
+                const Icon = skill.icon;
+                return (
+                  <div key={`r2b-${skill.name}-${index}`} className="flex items-center gap-4 glass-card px-8 py-4 w-[250px] group hover:bg-white/10 transition-colors cursor-pointer border-white/10 backdrop-blur-md bg-[#171717]/60">
+                    <Icon size={32} className="text-text-secondary group-hover:text-accent-violet transition-colors" />
+                    <span className="text-lg font-medium text-white whitespace-nowrap">{skill.name}</span>
+                  </div>
+                );
+              })}
+            </div>
           </motion.div>
         </div>
 
