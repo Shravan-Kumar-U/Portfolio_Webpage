@@ -17,13 +17,23 @@ import Footer from './components/Footer';
 function GlobalBackground() {
   return (
     <div className="fixed inset-0 z-0 pointer-events-none bg-primary">
-      <Canvas camera={{ position: [0, 0, 1] }} gl={{ antialias: false, alpha: false }}>
+      {/* Added dpr limiter and high-performance flag */}
+      <Canvas 
+        camera={{ position: [0, 0, 1] }} 
+        dpr={[1, 1.5]} 
+        gl={{ antialias: false, alpha: false, powerPreference: "high-performance" }}
+      >
         <color attach="background" args={['#030303']} />
-        <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-        <Sparkles count={150} scale={20} size={2} speed={0.4} opacity={0.3} color="#3b82f6" />
-        <Sparkles count={100} scale={20} size={3} speed={0.2} opacity={0.3} color="#8b5cf6" />
         
-        {/* Subtle dynamic ambient lights to make it look polished */}
+        {/* Reduced count and complexity for better mobile performance */}
+        <Stars radius={100} depth={50} count={2500} factor={4} saturation={0} fade speed={1} />
+        
+        {/* Hide Sparkles on mobile using a simple CSS trick, or rely on the dpr reduction */}
+        <group>
+          <Sparkles count={50} scale={20} size={2} speed={0.4} opacity={0.3} color="#3b82f6" />
+          <Sparkles count={30} scale={20} size={3} speed={0.2} opacity={0.3} color="#8b5cf6" />
+        </group>
+        
         <ambientLight intensity={0.2} />
         <pointLight position={[10, 10, 10]} color="#3b82f6" intensity={1} distance={50} />
         <pointLight position={[-10, -10, -10]} color="#8b5cf6" intensity={1} distance={50} />

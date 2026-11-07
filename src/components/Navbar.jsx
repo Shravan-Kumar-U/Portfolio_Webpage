@@ -111,7 +111,7 @@ export default function Navbar() {
               <a href="https://www.linkedin.com/in/shravan-kumar-u/" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-white transition-colors">
                 <FaLinkedin size={20} />
               </a>
-              <a href="/Shravan_Kumar_U_Resume.pdf" download><Button size="sm" variant="outline">Resume</Button></a>
+              <a href="/ResumeOfMe.pdf" download="Shravan_Kumar_U_Resume.pdf"><Button size="sm" variant="outline">Resume</Button></a>
             </div>
           </div>
 
@@ -232,11 +232,11 @@ export default function Navbar() {
                 exit={{ opacity: 0, y: 10 }}
                 transition={{ duration: 0.4, delay: 0.5 }}
               >
-                <a href="/Shravan_Kumar_U_Resume.pdf" download>
-                  <Button variant="outline" size="lg" onClick={() => setIsMobileMenuOpen(false)}>
-                    Download Resume
-                  </Button>
-                </a>
+              <a href="/ResumeOfMe.pdf" download="Shravan_Kumar_U_Resume.pdf">
+                <Button variant="outline" size="lg" onClick={() => setIsMobileMenuOpen(false)}>
+                  Download Resume
+                </Button>
+              </a>
               </motion.div>
             </div>
           </motion.div>
