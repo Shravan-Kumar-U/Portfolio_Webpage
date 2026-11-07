@@ -67,7 +67,7 @@ function App() {
   }, [isLoading]);
 
   return (
-    <div className="relative min-h-screen text-text-primary selection:bg-accent-blue selection:text-white">
+    <div className="relative min-h-screen w-full overflow-x-clip text-text-primary selection:bg-accent-blue selection:text-white">
       <AnimatePresence mode="wait">
         {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
       </AnimatePresence>
