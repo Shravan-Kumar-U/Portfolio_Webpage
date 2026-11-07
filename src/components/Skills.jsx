@@ -1,11 +1,10 @@
 import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Float } from '@react-three/drei';
+import { Float } from '@react-three/drei';
 import SectionTitle from './ui/SectionTitle';
 import { SKILLS_DATA } from '../data/constants';
 
-// Restored interactive 3D background element
 function ParticleSphere() {
   const mesh = useRef();
   
@@ -25,24 +24,23 @@ function ParticleSphere() {
 }
 
 export default function Skills() {
-  // Split skills into two arrays for the two moving lines
   const half = Math.ceil(SKILLS_DATA.length / 2);
   const row1 = SKILLS_DATA.slice(0, half);
   const row2 = SKILLS_DATA.slice(half);
 
-  // Duplicate arrays to create seamless loop
-  const marquee1 = [...row1, ...row1, ...row1, ...row1];
-  const marquee2 = [...row2, ...row2, ...row2, ...row2];
+  // FIX: Duplicate only once. This cuts DOM nodes in half, saving mobile memory.
+  const marquee1 = [...row1, ...row1];
+  const marquee2 = [...row2, ...row2];
 
   return (
     <section id="skills" className="py-24 relative overflow-hidden">
       
       {/* Restored 3D Background */}
       <div className="absolute inset-0 z-0 opacity-60 pointer-events-none flex justify-center items-center">
-        <Canvas camera={{ position: [0, 0, 5] }}>
+        {/* FIX: Added dpr limit and removed OrbitControls to stop touch hijacking */}
+        <Canvas camera={{ position: [0, 0, 5] }} dpr={[1, 1.5]} gl={{ powerPreference: "high-performance" }}>
           <ambientLight intensity={0.5} />
           <ParticleSphere />
-          <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} />
         </Canvas>
       </div>
 
@@ -58,16 +56,17 @@ export default function Skills() {
       <div className="relative z-10 w-full flex flex-col gap-8 overflow-hidden">
         
         {/* Row 1 - Left to Right */}
-        <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+        <div className="w-full overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+          {/* FIX: Use w-max and 0% to -50% to ensure a perfect, responsive loop */}
           <motion.div 
-            className="flex items-center justify-center md:justify-start gap-8 px-4"
-            animate={{ x: [0, -1035] }}
+            className="flex w-max gap-8 px-4"
+            animate={{ x: ["0%", "-50%"] }}
             transition={{ repeat: Infinity, ease: "linear", duration: 25 }}
           >
             {marquee1.map((skill, index) => {
               const Icon = skill.icon;
               return (
-                <div key={`${skill.name}-${index}`} className="flex items-center gap-4 glass-card px-8 py-4 min-w-[250px] group hover:bg-white/10 transition-colors cursor-pointer border-white/10 backdrop-blur-md bg-[#171717]/60">
+                <div key={`row1-${skill.name}-${index}`} className="flex items-center gap-4 glass-card px-8 py-4 w-[250px] group hover:bg-white/10 transition-colors cursor-pointer border-white/10 backdrop-blur-md bg-[#171717]/60">
                   <Icon size={32} className="text-text-secondary group-hover:text-accent-blue transition-colors" />
                   <span className="text-lg font-medium text-white whitespace-nowrap">{skill.name}</span>
                 </div>
@@ -77,16 +76,17 @@ export default function Skills() {
         </div>
 
         {/* Row 2 - Right to Left */}
-        <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+        <div className="w-full overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+          {/* FIX: Use w-max and -50% to 0% for reverse looping */}
           <motion.div 
-            className="flex items-center justify-center md:justify-start gap-8 px-4"
-            animate={{ x: [-1035, 0] }}
+            className="flex w-max gap-8 px-4"
+            animate={{ x: ["-50%", "0%"] }}
             transition={{ repeat: Infinity, ease: "linear", duration: 25 }}
           >
             {marquee2.map((skill, index) => {
               const Icon = skill.icon;
               return (
-                <div key={`${skill.name}-${index}`} className="flex items-center gap-4 glass-card px-8 py-4 min-w-[250px] group hover:bg-white/10 transition-colors cursor-pointer border-white/10 backdrop-blur-md bg-[#171717]/60">
+                <div key={`row2-${skill.name}-${index}`} className="flex items-center gap-4 glass-card px-8 py-4 w-[250px] group hover:bg-white/10 transition-colors cursor-pointer border-white/10 backdrop-blur-md bg-[#171717]/60">
                   <Icon size={32} className="text-text-secondary group-hover:text-accent-violet transition-colors" />
                   <span className="text-lg font-medium text-white whitespace-nowrap">{skill.name}</span>
                 </div>
