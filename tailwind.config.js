@@ -28,6 +28,21 @@ export default {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'hero-glow': 'conic-gradient(from 180deg at 50% 50%, #3b82f633 0deg, #8b5cf633 180deg, #06b6d433 360deg)',
       },
+      // ADDED: Pure CSS Keyframes for GPU-accelerated marquee
+      keyframes: {
+        'marquee-left': {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        'marquee-right': {
+          '0%': { transform: 'translateX(-50%)' },
+          '100%': { transform: 'translateX(0%)' },
+        }
+      },
+      animation: {
+        'marquee-left': 'marquee-left 30s linear infinite',
+        'marquee-right': 'marquee-right 30s linear infinite',
+      }
     },
   },
   plugins: [],

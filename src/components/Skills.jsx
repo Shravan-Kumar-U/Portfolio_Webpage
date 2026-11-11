@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-import { motion } from 'framer-motion';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float } from '@react-three/drei';
 import SectionTitle from './ui/SectionTitle';
@@ -24,23 +23,22 @@ function ParticleSphere() {
 }
 
 export default function Skills() {
-  // Split skills into two rows. No duplication needed here anymore.
   const half = Math.ceil(SKILLS_DATA.length / 2);
   const row1 = SKILLS_DATA.slice(0, half);
   const row2 = SKILLS_DATA.slice(half);
+  
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   return (
     <section id="skills" className="py-24 relative overflow-hidden">
       
-      {/* 3D Background - Optimized for mobile scrolling */}
       <div className="absolute inset-0 z-0 opacity-60 pointer-events-none flex justify-center items-center">
-        <Canvas camera={{ position: [0, 0, 5] }} dpr={[1, 1.5]} gl={{ powerPreference: "high-performance" }}>
+        <Canvas camera={{ position: [0, 0, 5] }} dpr={isMobile ? 1 : [1, 1.5]} gl={{ powerPreference: "high-performance" }}>
           <ambientLight intensity={0.5} />
           <ParticleSphere />
         </Canvas>
       </div>
 
-      {/* Background glow */}
       <div className="absolute inset-0 flex justify-center items-center pointer-events-none z-0">
         <div className="w-full h-[300px] bg-accent-blue/10 blur-[120px]" />
       </div>
@@ -53,12 +51,8 @@ export default function Skills() {
         
         {/* Row 1 - Left to Right */}
         <div className="w-full overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
-          <motion.div 
-            className="flex w-max"
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{ repeat: Infinity, ease: "linear", duration: 25 }}
-          >
-            {/* Block 1 */}
+          {/* Replaced motion.div with pure CSS animate-marquee-left */}
+          <div className="flex w-max animate-marquee-left hover:pause-animation">
             <div className="flex gap-8 pr-8">
               {row1.map((skill, index) => {
                 const Icon = skill.icon;
@@ -70,7 +64,6 @@ export default function Skills() {
                 );
               })}
             </div>
-            {/* Block 2 (Exact Duplicate for Seamless Loop) */}
             <div className="flex gap-8 pr-8">
               {row1.map((skill, index) => {
                 const Icon = skill.icon;
@@ -82,17 +75,13 @@ export default function Skills() {
                 );
               })}
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Row 2 - Right to Left */}
         <div className="w-full overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
-          <motion.div 
-            className="flex w-max"
-            animate={{ x: ["-50%", "0%"] }}
-            transition={{ repeat: Infinity, ease: "linear", duration: 25 }}
-          >
-            {/* Block 1 */}
+          {/* Replaced motion.div with pure CSS animate-marquee-right */}
+          <div className="flex w-max animate-marquee-right hover:pause-animation">
             <div className="flex gap-8 pr-8">
               {row2.map((skill, index) => {
                 const Icon = skill.icon;
@@ -104,7 +93,6 @@ export default function Skills() {
                 );
               })}
             </div>
-            {/* Block 2 */}
             <div className="flex gap-8 pr-8">
               {row2.map((skill, index) => {
                 const Icon = skill.icon;
@@ -116,7 +104,7 @@ export default function Skills() {
                 );
               })}
             </div>
-          </motion.div>
+          </div>
         </div>
 
       </div>
